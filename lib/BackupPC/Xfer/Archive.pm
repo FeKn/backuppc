@@ -67,6 +67,8 @@ sub run
             archiveloc    => $t->{archiveloc},
             parfile       => $t->{parfile},
             compression   => $t->{compression},
+            encryption    => $t->{encryption},
+            enckey        => $t->{enckey},
             compext       => $t->{compext},
             splitsize     => $t->{splitsize},
             host          => ${@HostList[0]}[$i],

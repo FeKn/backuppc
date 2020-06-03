@@ -291,6 +291,23 @@ $Lang{BackupPC_Archive2_compression} = <<EOF;
 </tr>
 EOF
 
+$Lang{BackupPC_Archive2_encryption} = <<EOF;
+<tr>
+    <td>Encryption</td>
+    <td>
+    <input type="radio" value="0" name="encryption" \$ArchiveEncNone>None<br>
+    <input type="radio" value="1" name="encryption" \$ArchiveEncGpg>ggp<br>
+    </td>
+</tr>
+EOF
+
+$Lang{BackupPC_Archive2_enckey} = <<EOF;
+<tr>
+    <td>Encryption Key</td>
+    <td><input type="text" value="\$ArchiveEncKey" name="enckey"></td>
+</tr>
+EOF
+
 $Lang{BackupPC_Archive2_parity} = <<EOF;
 <tr>
     <td>Percentage of Parity Data (0 = disable, 5 = typical)</td>
@@ -1461,6 +1478,7 @@ $Lang{CfgEdit_Title_Full_Backups} = "Full Backups";
 $Lang{CfgEdit_Title_Incremental_Backups} = "Incremental Backups";
 $Lang{CfgEdit_Title_Blackouts} = "Blackouts";
 $Lang{CfgEdit_Title_Other} = "Other";
+$Lang{CfgEdit_Title_Archive_Encryption} = "Archive Encryption";
 $Lang{CfgEdit_Title_Backup_Settings} = "Backup Settings";
 $Lang{CfgEdit_Title_Client_Lookup} = "Client Lookup";
 $Lang{CfgEdit_Title_User_Commands} = "User Commands";

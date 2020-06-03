@@ -320,6 +320,11 @@ use vars qw(%ConfigMeta);
 	    type   => "select",
 	    values => [qw(none bzip2 gzip)],
     },
+    ArchiveEnc          => {
+            type   => "select",
+            values => [qw(none gpg)],
+    },
+    ArchiveEncKey       => "string",
     ArchivePar	 	=> "boolean",
     ArchiveSplit	=> "float",
     ArchiveClientCmd 	=> "string",
@@ -340,6 +345,21 @@ use vars qw(%ConfigMeta);
     MaxOldPerPCLogFiles	=> "integer",
 
     CompressLevel	=> "integer",
+
+    EncPath             => "string",
+    GpgHomeDir          => "string",
+    GpgCipherAlgo       => {
+            type   => "select",
+            values => [qw(AES256)],
+    },
+    GpgDigestAlgo       => {
+            type   => "select",
+            values => [qw(SHA512)],
+    },
+    GpgS2kDigestAlgo    => {
+            type   => "select",
+            values => [qw(SHA512)],
+    },
 
     DumpPreUserCmd	=> {type => "string", undefIfEmpty => 1},
     DumpPostUserCmd	=> {type => "string", undefIfEmpty => 1},
@@ -495,6 +515,8 @@ use vars qw(%ConfigMeta);
                 FtpRestoreEnabled         => "boolean",
                 ArchiveDest               => "boolean",
                 ArchiveComp               => "boolean",
+                ArchiveEnc                => "boolean",
+                ArchiveEncKey             => "boolean",
                 ArchivePar                => "boolean",
                 ArchiveSplit              => "boolean",
                 ArchiveClientCmd          => "boolean",
@@ -531,6 +553,11 @@ use vars qw(%ConfigMeta);
                 EMailOutlookBackupSubj    => "boolean",
                 EMailOutlookBackupMesg    => "boolean",
                 EMailHeaders              => "boolean",
+                EncPath                   => "boolean",
+                GpgHomeDir                => "boolean",
+                GpgCipherAlgo             => "boolean",
+                GpgCipherAlgo             => "boolean",
+                GpgS2kDigestAlgo          => "boolean",
 	    },
     },
 

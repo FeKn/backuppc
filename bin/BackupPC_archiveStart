@@ -96,6 +96,8 @@ my %ArchiveReq = (
     compression => $bpc->{Conf}{ArchiveComp} eq 'none' ? $bpc->{Conf}{CatPath}
                     : ($bpc->{Conf}{ArchiveComp} eq 'gzip'
                       ? $bpc->{Conf}{GzipPath} : $bpc->{Conf}{Bzip2Path}),
+    encryption  => $bpc->{Conf}{ArchiveEnc},
+    enckey      => $bpc->{Conf}{ArchiveEncKey},
     compext     => $bpc->{Conf}{ArchiveComp} eq 'none' ? ''
                     : ($bpc->{Conf}{ArchiveComp} eq 'gzip' ? '.gz' : '.bz2'),
     parfile     => $bpc->{Conf}{ArchivePar},

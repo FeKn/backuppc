@@ -106,16 +106,18 @@ EOF
         %Conf = $bpc->Conf();
 
         my $args = {
-            SplitPath    => $Conf{SplitPath},
-            ParPath      => $Conf{ParPath},
-            CatPath      => $Conf{CatPath},
-            GzipPath     => $Conf{GzipPath},
-            Bzip2Path    => $Conf{Bzip2Path},
-            ArchiveDest  => $Conf{ArchiveDest},
-            ArchiveComp  => $Conf{ArchiveComp},
-            ArchivePar   => $Conf{ArchivePar},
-            ArchiveSplit => $Conf{ArchiveSplit},
-            topDir       => $bpc->{TopDir},
+            SplitPath     => $Conf{SplitPath},
+            ParPath       => $Conf{ParPath},
+            CatPath       => $Conf{CatPath},
+            GzipPath      => $Conf{GzipPath},
+            Bzip2Path     => $Conf{Bzip2Path},
+            ArchiveDest   => $Conf{ArchiveDest},
+            ArchiveComp   => $Conf{ArchiveComp},
+            ArchiveEnc    => $Conf{ArchiveEnc},
+            ArchiveEncKey => $Conf{ArchiveEncKey},
+            ArchivePar    => $Conf{ArchivePar},
+            ArchiveSplit  => $Conf{ArchiveSplit},
+            topDir        => $bpc->{TopDir},
         };
 
         ServerConnect();
@@ -142,7 +144,8 @@ EOF
             ErrorExit($Lang->{You_haven_t_selected_any_hosts});
         }
         my ($ArchiveDest, $ArchiveCompNone, $ArchiveCompGzip,
-            $ArchiveCompBzip2, $ArchivePar, $ArchiveSplit);
+            $ArchiveCompBzip2, $ArchivePar, $ArchiveSplit,
+            $ArchiveEncNone, $ArchiveEncGpg, $ArchiveEncKey);
         $ArchiveDest = $Conf{ArchiveDest};
         if ( $Conf{ArchiveComp} eq "none" ) {
             $ArchiveCompNone   = "checked";
@@ -159,8 +162,19 @@ EOF
         } else {
             $ArchiveCompBzip2  = "";
         }
-        $ArchivePar   = $Conf{ArchivePar};
-        $ArchiveSplit = $Conf{ArchiveSplit};
+        if ( $Conf{ArchiveEnc} eq "none" ) {
+            $ArchiveEncNone   = "checked";
+        } else {
+            $ArchiveEncNone   = "";
+        }
+        if ( $Conf{ArchiveEnc} eq "gpg" ) {
+            $ArchiveEncGpg   = "checked";
+        } else {
+            $ArchiveEncGpg   = "";
+        }
+        $ArchiveEncKey = $Conf{ArchiveEncKey};
+        $ArchivePar    = $Conf{ArchivePar};
+        $ArchiveSplit  = $Conf{ArchiveSplit};
 
         if ( $In{type} == 1 ) {
             #
@@ -172,6 +186,12 @@ EOF
             }
             if ( $Conf{ArchiveClientCmd} =~ /\$compression\b/ ) {
                 $paramStr .= eval("qq{$Lang->{BackupPC_Archive2_compression}}");
+            }
+            if ( $Conf{ArchiveClientCmd} =~ /\$encryption\b/ ) {
+                $paramStr .= eval("qq{$Lang->{BackupPC_Archive2_encryption}}");
+            }
+            if ( $Conf{ArchiveClientCmd} =~ /\$enckey\b/ ) {
+                $paramStr .= eval("qq{$Lang->{BackupPC_Archive2_enckey}}");
             }
             if ( $Conf{ArchiveClientCmd} =~ /\$parfile\b/
                     && -x $Conf{ParPath} ) {
@@ -200,8 +220,19 @@ EOF
                 $compext = '.gz';
             } else { # No Compression
                 $compname = $Conf{CatPath};
-                $compext = '.raw';
+                if ( $In{encryption} == 1 ) {
+                    $compext = '';
+                }else{
+                    $compext = '.raw';
+                }
             }
+            my $encryption;
+	    if ( $In{encryption} == 1 ) {          # GPG encryption
+                $encryption = 'gpg';
+            } else {                               # no encryption
+                $encryption = 'none'
+            }
+            my $enckey = $In{enckey};
             my $fullsplitsize = $In{splitsize} . '000000';
             my %ArchiveReq = (
                 # parameters for the archive
@@ -209,7 +240,8 @@ EOF
                 archtype    => $In{archive_type},
                 compression => $compname,
                 compext     => $compext,
-                parfile     => $In{par},
+                encryption  => $encryption,
+                enckey      => $enckey,
                 splitsize   => $fullsplitsize,
                 host        => $archivehost,
 
